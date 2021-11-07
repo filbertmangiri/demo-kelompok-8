@@ -36,7 +36,7 @@ class AccountModel extends Model
 	protected $validationMessages = [];
 	protected $skipValidation     = true;
 
-	public function _get($post = [], $onlyDeleted = false): array
+	public function getAccount($post = [], $onlyDeleted = false): array
 	{
 		if (!$post) {
 			if ($onlyDeleted) {
@@ -58,7 +58,7 @@ class AccountModel extends Model
 		return $account;
 	}
 
-	public function _insert($post): int
+	public function insertAccount($post): int
 	{
 		$insertedID = -1;
 
@@ -82,7 +82,7 @@ class AccountModel extends Model
 		return $insertedID;
 	}
 
-	public function _delete($id): string
+	public function deleteAccount($id): string
 	{
 		$error_msg = '';
 
@@ -95,7 +95,7 @@ class AccountModel extends Model
 		return $error_msg;
 	}
 
-	public function _restore($id): string
+	public function restoreAccount($id): string
 	{
 		$error_msg = '';
 

@@ -34,7 +34,7 @@ class Login extends BaseController
 
 	public function submit()
 	{
-		$account = $this->accountModel->_get($this->request->getPost());
+		$account = $this->accountModel->getAccount($this->request->getPost());
 
 		if ($account) {
 			$this->session->set('acc_id', $account['id']);

@@ -49,7 +49,7 @@ class Register extends BaseController
 			return redirect()->to(base_url('register'))->withInput()->with('validation', $validation);
 		}
 
-		$this->session->set('acc_id', $this->accountModel->accountInsert($this->request->getPost()));
+		$this->session->set('acc_id', $this->accountModel->insertAccount($this->request->getPost()));
 
 		$this->session->set('acc_email', $this->request->getPost('email'));
 		$this->session->set('acc_username', $this->request->getPost('username'));

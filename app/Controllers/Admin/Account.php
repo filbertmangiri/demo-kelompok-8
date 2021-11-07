@@ -21,8 +21,8 @@ class Account extends BaseController
 	{
 		$data = [
 			'title' => 'Admin | Akun',
-			'accounts' => $this->accountModel->_get(),
-			'deletedAccounts' => $this->accountModel->_get([], true)
+			'accounts' => $this->accountModel->getAccount(),
+			'deletedAccounts' => $this->accountModel->getAccount([], true)
 		];
 
 		return view('admin/account/index', $data);
@@ -33,7 +33,7 @@ class Account extends BaseController
 		$id = $this->request->getPost('id');
 
 		if ($id > 0) {
-			$error_msg = $this->accountModel->_delete($id);
+			$error_msg = $this->accountModel->deleteAccount($id);
 
 			if (empty($error_msg)) {
 				$this->session->remove('admin_acc_error_msg');
@@ -48,7 +48,7 @@ class Account extends BaseController
 		$id = $this->request->getPost('id');
 
 		if ($id > 0) {
-			$error_msg = $this->accountModel->_restore($id);
+			$error_msg = $this->accountModel->restoreAccount($id);
 
 			if (empty($error_msg)) {
 				$this->session->remove('admin_deleted_acc_error_msg');
