@@ -82,12 +82,12 @@ class AccountModel extends Model
 		return $insertedID;
 	}
 
-	public function deleteAccount($id): string
+	public function deleteAccount($id, $purge = false): string
 	{
 		$error_msg = '';
 
 		try {
-			$this->delete($id);
+			$this->delete($id, $purge);
 		} catch (\Exception $e) {
 			$error_msg = $e->getMessage();
 		}

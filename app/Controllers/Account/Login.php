@@ -44,13 +44,10 @@ class Login extends BaseController
 			$this->session->set('acc_first_name', $account['first_name']);
 			$this->session->set('acc_last_name', $account['last_name']);
 			$this->session->set('acc_birth_date', $account['birth_date']);
-			$this->session->set('acc_gender', $account['gender']);
+			$this->session->set('gender', (bool) $account['gender']);
+			$this->session->set('is_admin', (bool) $account['is_admin']);
 
 			$this->session->set('is_logged_in', true);
-
-			if ($account['is_admin']) {
-				$this->session->set('is_admin', true);
-			}
 
 			$this->session->remove('login_error_msg');
 		} else {

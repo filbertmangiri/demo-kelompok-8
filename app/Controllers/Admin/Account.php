@@ -28,12 +28,12 @@ class Account extends BaseController
 		return view('admin/account/index', $data);
 	}
 
-	public function delete()
+	public function delete($purge = false)
 	{
 		$id = $this->request->getPost('id');
 
 		if ($id > 0) {
-			$error_msg = $this->accountModel->deleteAccount($id);
+			$error_msg = $this->accountModel->deleteAccount($id, (bool) $purge);
 
 			if (empty($error_msg)) {
 				$this->session->remove('admin_acc_error_msg');
@@ -51,9 +51,9 @@ class Account extends BaseController
 			$error_msg = $this->accountModel->restoreAccount($id);
 
 			if (empty($error_msg)) {
-				$this->session->remove('admin_deleted_acc_error_msg');
+				$this->session->remove('admin_acc_error_msg');
 			} else {
-				$this->session->setFlashdata('admin_deleted_acc_error_msg', $error_msg);
+				$this->session->setFlashdata('admin_acc_error_msg', $error_msg);
 			}
 		}
 	}

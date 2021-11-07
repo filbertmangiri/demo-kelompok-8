@@ -56,7 +56,7 @@ class Register extends BaseController
 		$this->session->set('acc_first_name', $this->request->getPost('first_name'));
 		$this->session->set('acc_last_name', $this->request->getPost('last_name'));
 		$this->session->set('acc_birth_date', $this->request->getPost('birth_date'));
-		$this->session->set('acc_gender', $this->request->getPost('gender'));
+		$this->session->set('acc_gender', (bool) $this->request->getPost('gender'));
 
 		$this->session->set('is_logged_in', true);
 
