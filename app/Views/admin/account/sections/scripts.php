@@ -4,42 +4,36 @@
 <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
 
 <script type="text/javascript">
+	let accountsTable;
+	let deletedAccountsTable;
+
 	$(document).ready(function() {
-		$('#accountsTable').DataTable();
+		accountsTable = $('#accountsTable').DataTable();
 		$('#deleteModal').modal('hide');
 
-		$('#deletedAccountsTable').DataTable();
+		deletedAccountsTable = $('#deletedAccountsTable').DataTable();
 		$('#restoreModal').modal('hide');
-		$('#permDeleteModal').modal('hide');
 	});
 
 	// Delete Account
-	function acc_delete(id, event) {
-		let confirm = $('#deleteModal .modal-body');
-		let detail = $(event.target).closest('tr');
-
-		confirm.html('Konfirmasi penghapusan akun dengan detail sebagai berikut : <br><br>');
-		confirm.append('<span class="tab-align">ID</span> = ' + detail.children('#id').text() + '<br>');
-		confirm.append('<span class="tab-align">Email</span> = ' + detail.children('#email').text() + '<br>');
-		confirm.append('<span class="tab-align">Username</span> = ' + detail.children('#username').text() + '<br>');
-		confirm.append('<span class="tab-align">Nama</span> = ' + detail.children('#full_name').text() + '<br>');
-		confirm.append('<span class="tab-align">Tanggal Lahir</span> = ' + detail.children('#birth_date').text() + '<br>');
-		confirm.append('<span class="tab-align">Jenis Kelamin</span> = ' + detail.children('#gender').text() + '<br>');
-		confirm.append('<span class="tab-align">Admin</span> = ' + detail.children('#is_admin').text() + '<br>');
-
-		$('#accDeleteBtn').parent().attr('onsubmit', 'acc_delete_confirm(' + id + ')');
-
-		$('#deleteModal').modal('show');
+	function acc_delete(id, event, purge = false) {
+		acc_detail_modal(
+			(purge ? deletedAccountsTable : accountsTable),
+			event,
+			'Hapus' + (purge ? ' Permanen' : '') + ' Akun',
+			'hapus ' + (purge ? 'permanen' : '') + '',
+			'Hapus' + (purge ? ' Permanen' : ''),
+			'acc_delete_confirm(' + id + ', ' + purge + ')');
 	}
 
-	function acc_delete_confirm(id) {
+	function acc_delete_confirm(id, purge = false) {
 		if (id < 1) {
 			alert('ID akun tidak valid');
 			return;
 		}
 
 		$.ajax({
-			url: '<?= base_url('admin/account/delete') ?>',
+			url: ('<?= base_url('admin/account/delete') ?>' + (purge ? '/1' : '')),
 			type: 'POST',
 			data: {
 				'id': id
@@ -51,21 +45,15 @@
 
 	// Restore Account
 	function acc_restore(id, event) {
-		let confirm = $('#restoreModal .modal-body');
-		let detail = $(event.target).closest('tr');
+		acc_detail_modal(
+			deletedAccountsTable,
+			event,
+			'Pulihkan Akun',
+			'pemulihan',
+			'Pulihkan',
+			'acc_restore_confirm(' + id + ')');
 
-		confirm.html('Konfirmasi pemulihan akun dengan detail sebagai berikut : <br><br>');
-		confirm.append('<span class="tab-align">ID</span> = ' + detail.children('#id').text() + '<br>');
-		confirm.append('<span class="tab-align">Email</span> = ' + detail.children('#email').text() + '<br>');
-		confirm.append('<span class="tab-align">Username</span> = ' + detail.children('#username').text() + '<br>');
-		confirm.append('<span class="tab-align">Nama</span> = ' + detail.children('#full_name').text() + '<br>');
-		confirm.append('<span class="tab-align">Tanggal Lahir</span> = ' + detail.children('#birth_date').text() + '<br>');
-		confirm.append('<span class="tab-align">Jenis Kelamin</span> = ' + detail.children('#gender').text() + '<br>');
-		confirm.append('<span class="tab-align">Admin</span> = ' + detail.children('#is_admin').text() + '<br>');
-
-		$('#accRestoreBtn').parent().attr('onsubmit', 'acc_restore_confirm(' + id + ')');
-
-		$('#restoreModal').modal('show');
+		$('#baseModalBtn').addClass('btn-primary').removeClass('btn-danger');
 	}
 
 	function acc_restore_confirm(id) {
@@ -85,39 +73,33 @@
 		$('#restoreModal').modal('hide');
 	}
 
-	// Permanent Delete Account
-	function acc_perm_delete(id, event) {
-		let confirm = $('#permDeleteModal .modal-body');
-		let detail = $(event.target).closest('tr');
+	function acc_detail_modal(table, event, label = '', confirm = '', button = '', onsubmit = '') {
+		let modal = $('#baseModal');
 
-		confirm.html('Konfirmasi penghapusan akun dengan detail sebagai berikut : <br><br>');
-		confirm.append('<span class="tab-align">ID</span> = ' + detail.children('#id').text() + '<br>');
-		confirm.append('<span class="tab-align">Email</span> = ' + detail.children('#email').text() + '<br>');
-		confirm.append('<span class="tab-align">Username</span> = ' + detail.children('#username').text() + '<br>');
-		confirm.append('<span class="tab-align">Nama</span> = ' + detail.children('#full_name').text() + '<br>');
-		confirm.append('<span class="tab-align">Tanggal Lahir</span> = ' + detail.children('#birth_date').text() + '<br>');
-		confirm.append('<span class="tab-align">Jenis Kelamin</span> = ' + detail.children('#gender').text() + '<br>');
-		confirm.append('<span class="tab-align">Admin</span> = ' + detail.children('#is_admin').text() + '<br>');
+		modal.find('#baseModalLabel').html(label);
 
-		$('#accPermDeleteBtn').parent().attr('onsubmit', 'acc_perm_delete_confirm(' + id + ')');
+		let body = modal.find('.modal-body');
+		let columns = [
+			'ID',
+			'Email',
+			'Username',
+			'Nama',
+			'Tanggal Lahir',
+			'Jenis Kelamin',
+			'Admin'
+		];
 
-		$('#permDeleteModal').modal('show');
-	}
+		body.html('Konfirmasi ' + confirm + ' akun dengan detail sebagai berikut : <br><br>');
 
-	function acc_perm_delete_confirm(id) {
-		if (id < 1) {
-			alert('ID akun tidak valid');
-			return;
+		let row = table.row(event.target.closest('tr')).data();
+
+		for (let i = 0, len = row.length - 1; i < len; i++) {
+			body.append('<span class="tab-align">' + columns[i] + '</span> = ' + row[i] + '<br>');
 		}
 
-		$.ajax({
-			url: '<?= base_url('admin/account/delete/1') ?>',
-			type: 'POST',
-			data: {
-				'id': id
-			}
-		});
+		$('#baseModalBtn').html(button);
+		$('#baseModalBtn').parent().attr('onsubmit', onsubmit);
 
-		$('#deleteModal').modal('hide');
+		modal.modal('show');
 	}
 </script>

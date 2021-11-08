@@ -52,7 +52,6 @@
 							<td id="birth_date"><?= $key['birth_date']; ?></td>
 							<td id="gender"><?= $key['gender'] == 1 ? 'Perempuan' : 'Laki-laki'; ?></td>
 							<td id="is_admin"><?= $key['is_admin'] == 1 ? 'Ya' : 'Tidak'; ?></td>
-
 							<td>
 								<?php if ($key['id'] != session()->get('acc_id')) : ?>
 									<span id="editBtn" onclick="acc_edit(<?= $key['id']; ?>);">
@@ -93,12 +92,11 @@
 							<td id="birth_date"><?= $key['birth_date']; ?></td>
 							<td id="gender"><?= $key['gender'] == 1 ? 'Perempuan' : 'Laki-laki'; ?></td>
 							<td id="is_admin"><?= $key['is_admin'] == 1 ? 'Ya' : 'Tidak'; ?></td>
-
 							<td>
 								<span id="restoreBtn" onclick="acc_restore(<?= $key['id']; ?>, event);">
 									<i class="bi bi-arrow-counterclockwise text-primary"></i>
 								</span>
-								<span id="permDeleteBtn" onclick="acc_perm_delete(<?= $key['id']; ?>, event);">
+								<span id="permDeleteBtn" onclick="acc_delete(<?= $key['id']; ?>, event, true);">
 									<i class="bi bi-trash text-danger"></i>
 								</span>
 							</td>

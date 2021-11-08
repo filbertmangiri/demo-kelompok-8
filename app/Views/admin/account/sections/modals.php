@@ -1,9 +1,11 @@
-<!-- Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<!-- Base Modal -->
+<div class="modal fade" id="baseModal" tabindex="-1" aria-labelledby="baseModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="deleteModalLabel">Hapus Akun</h5>
+				<h5 class="modal-title" id="baseModalLabel">
+					<!-- SCRIPT -->
+				</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -11,7 +13,9 @@
 			</div>
 			<div class="modal-footer">
 				<form>
-					<button type="submit" class="btn btn-danger" id="accDeleteBtn">Hapus</button>
+					<button type="submit" class="btn btn-danger" id="baseModalBtn">
+						<!-- SCRIPT -->
+					</button>
 				</form>
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
 			</div>
@@ -20,7 +24,7 @@
 </div>
 
 <!-- Restore Modal -->
-<div class="modal fade" id="restoreModal" tabindex="-1" aria-labelledby="restoreModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="restoreModal" tabindex="-1" aria-labelledby="restoreModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -28,7 +32,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<!-- SCRIPT -->
+				SCRIPT
 			</div>
 			<div class="modal-footer">
 				<form>
@@ -38,25 +42,4 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-<!-- Permanent Delete Modal -->
-<div class="modal fade" id="permDeleteModal" tabindex="-1" aria-labelledby="permDeleteModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="permDeleteModalLabel">Hapus Permanen Akun</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<!-- SCRIPT -->
-			</div>
-			<div class="modal-footer">
-				<form>
-					<button type="submit" class="btn btn-danger" id="accPermDeleteBtn">Hapus Permanen</button>
-				</form>
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-			</div>
-		</div>
-	</div>
-</div>
+</div> -->

@@ -35,17 +35,17 @@ $routes->setAutoRoute(true);
 // Home
 $routes->get('/', 'Pages');
 
-// Admin
-$routes->get('/admin', 'Admin\Base');
-$routes->get('/admin', 'Admin');
-
 // Account
+
 $routes->post('/login/submit', 'Account\Login::submit');
+$routes->get('/login/(:any)', 'Account\Login');
 $routes->get('/login', 'Account\Login');
 
 $routes->post('/register/submit', 'Account\Register::submit');
+$routes->get('/register/(:any)', 'Account\Register');
 $routes->get('/register', 'Account\Register');
 
+$routes->get('/logout/(:any)', 'Account\Logout');
 $routes->get('/logout', 'Account\Logout');
 
 /*
