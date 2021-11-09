@@ -3,7 +3,7 @@
 <?= $this->section('content'); ?>
 
 <div class="container col-6">
-	<form id="registerForm" action="<?= base_url('account/register/submit'); ?>" method="post">
+	<form id="registerForm" action="<?= base_url('account/register/insert'); ?>" method="post">
 		<?= csrf_field(); ?>
 
 		<div class="form-floating mb-3">
@@ -81,7 +81,7 @@
 			</div>
 		</div>
 
-		<div class="form-group mb-3">
+		<div class="form-group mb-5">
 			<div class="form-check form-check-inline">
 				<input class="form-check-input" type="radio" name="gender" id="genderMale" value="0" <?= ((bool) old('gender')) ? '' : 'checked'; ?>>
 				<label class="form-check-label" for="genderMale">

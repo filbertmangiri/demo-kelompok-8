@@ -29,7 +29,7 @@ class Register extends BaseController
 		return view('account/register', $data);
 	}
 
-	public function submit()
+	public function insert()
 	{
 		if (!$this->validate([
 			'email' => 'required|valid_email|is_unique[accounts.email]',

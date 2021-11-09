@@ -51,7 +51,7 @@ class AccountModel extends Model
 			->orWhere('username', $data['email_username'])
 			->first();
 
-		if (!$account || !password_verify($data['password'], $account['password'])) {
+		if (!$account || $account['deleted_at'] || !password_verify($data['password'], $account['password'])) {
 			return null;
 		}
 
@@ -80,6 +80,19 @@ class AccountModel extends Model
 		}
 
 		return $insertedID;
+	}
+
+	public function updateAccount($id, $data = []): bool
+	{
+		try {
+			settype($data['gender'], 'boolean');
+
+			$this->update($id, $data);
+		} catch (\Exception $e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function deleteAccount($id, $purge = false): string

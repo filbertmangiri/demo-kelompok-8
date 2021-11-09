@@ -59,8 +59,13 @@ $routes->group('u', ['namespace' => '\App\Controllers\User'], function ($routes)
 
 	$routes->group('account', function ($routes) {
 		$routes->get('', 'Account');
+
+		$routes->post('update', 'Account::update');
+
 		$routes->get('(:any)', 'Account::$1');
 	});
+
+	$routes->get('settings', 'Account::settings'); // Optional -> base_url('u/settings');
 
 	$routes->group('profile', function ($routes) {
 		$routes->get('', session()->get('is_logged_in') === true ? 'Base::profile' : function () {
@@ -97,9 +102,9 @@ $routes->group('account', ['namespace' => '\App\Controllers\Account'], function 
 });
 
 // Redirect to home instead of showing 404
-// $routes->get('(:any)', function () {
-// 	return redirect()->to(base_url());
-// });
+$routes->get('(:any)', function () {
+	return redirect()->to(base_url());
+});
 
 /*
  * --------------------------------------------------------------------

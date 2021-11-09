@@ -28,7 +28,7 @@ class Login extends BaseController
 		return view('account/login', $data);
 	}
 
-	public function submit()
+	public function check()
 	{
 		$account = $this->accountModel->getAccount($this->request->getPost());
 

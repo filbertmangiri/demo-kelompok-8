@@ -3,7 +3,7 @@
 <?= $this->section('content'); ?>
 
 <div class="container col-6">
-	<form id="loginForm" action="<?= base_url('account/login/submit'); ?>" method="post">
+	<form id="loginForm" action="<?= base_url('account/login/check'); ?>" method="post">
 		<?= csrf_field(); ?>
 
 		<?php if (!empty(session()->getFlashData('login_error_msg'))) : ?>
@@ -29,7 +29,7 @@
 			<label for="emailUsername">Email atau username</label>
 		</div>
 
-		<div class="form-floating mb-3">
+		<div class="form-floating mb-5">
 			<input type="password" class="form-control" id="password" name="password" placeholder="password">
 			<label for="password">Password</label>
 		</div>

@@ -29,7 +29,7 @@
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="myAccount">
 							<li><a class="dropdown-item" href="<?= base_url('u/profile/' . session()->get('acc_username')); ?>">Profil</a></li>
-							<li><a class="dropdown-item" href="<?= base_url('u/settings'); ?>">Pengaturan</a></li>
+							<li><a class="dropdown-item" href="<?= base_url('u/account/settings'); ?>">Pengaturan</a></li>
 							<li>
 								<hr class="dropdown-divider">
 							</li>

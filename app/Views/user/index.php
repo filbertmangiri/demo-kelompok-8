@@ -27,7 +27,7 @@
 				<td>Nama</td>
 				<td> </td>
 				<td>:</td>
-				<td><?= $account['first_name'] . $account['last_name']; ?></td>
+				<td><?= $account['first_name'] . ' ' . $account['last_name']; ?></td>
 			</tr>
 			<tr>
 				<td>Tanggal Lahir</td>
