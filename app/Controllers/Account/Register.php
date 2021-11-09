@@ -19,10 +19,6 @@ class Register extends BaseController
 
 	public function index()
 	{
-		if ($this->session->get('is_logged_in') === true) {
-			return redirect()->to(base_url());
-		}
-
 		session();
 
 		$data = [
@@ -46,7 +42,7 @@ class Register extends BaseController
 			'gender' => 'required'
 		])) {
 			$validation = \Config\Services::validation();
-			return redirect()->to(base_url('register'))->withInput()->with('validation', $validation);
+			return redirect()->to(base_url('account/register'))->withInput()->with('validation', $validation);
 		}
 
 		$this->session->set('acc_id', $this->accountModel->insertAccount($this->request->getPost()));

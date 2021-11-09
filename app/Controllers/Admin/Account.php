@@ -20,9 +20,8 @@ class Account extends BaseController
 	public function index()
 	{
 		$data = [
-			'title' => 'Admin | Akun',
-			'accounts' => $this->accountModel->getAccount(),
-			'deletedAccounts' => $this->accountModel->getAccount([], true)
+			'title' => 'Admin - Akun',
+			'accounts' => $this->accountModel->getAccount()
 		];
 
 		return view('admin/account/index', $data);

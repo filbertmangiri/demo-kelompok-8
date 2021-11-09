@@ -21,9 +21,12 @@
 			(purge ? deletedAccountsTable : accountsTable),
 			event,
 			'Hapus' + (purge ? ' Permanen' : '') + ' Akun',
-			'hapus ' + (purge ? 'permanen' : '') + '',
-			'Hapus' + (purge ? ' Permanen' : ''),
-			'acc_delete_confirm(' + id + ', ' + purge + ')');
+			'hapus ' + (purge ? 'permanen' : '') + '', {
+				html: 'Hapus' + (purge ? ' Permanen' : ''),
+				color: 'btn-danger',
+				onsubmit: 'acc_delete_confirm(' + id + ', ' + purge + ')'
+			}
+		);
 	}
 
 	function acc_delete_confirm(id, purge = false) {
@@ -33,7 +36,7 @@
 		}
 
 		$.ajax({
-			url: ('<?= base_url('admin/account/delete') ?>' + (purge ? '/1' : '')),
+			url: ('<?= base_url('admin/account/delete'); ?>' + (purge ? '/1' : '')),
 			type: 'POST',
 			data: {
 				'id': id
@@ -49,9 +52,12 @@
 			deletedAccountsTable,
 			event,
 			'Pulihkan Akun',
-			'pemulihan',
-			'Pulihkan',
-			'acc_restore_confirm(' + id + ')');
+			'pemulihan', {
+				html: 'Pulihkan',
+				color: 'btn-primary',
+				onsubmit: 'acc_restore_confirm(' + id + ')'
+			},
+		);
 
 		$('#baseModalBtn').addClass('btn-primary').removeClass('btn-danger');
 	}
@@ -63,7 +69,7 @@
 		}
 
 		$.ajax({
-			url: '<?= base_url('admin/account/restore') ?>',
+			url: '<?= base_url('admin/account/restore'); ?>',
 			type: 'POST',
 			data: {
 				'id': id
@@ -73,11 +79,17 @@
 		$('#restoreModal').modal('hide');
 	}
 
-	function acc_detail_modal(table, event, label = '', confirm = '', button = '', onsubmit = '') {
+	function acc_detail_modal(table, event, label = '', confirm = '', button = {
+		html: '',
+		color: 'btn-primary',
+		onsubmit: ''
+	}) {
 		let modal = $('#baseModal');
 
+		// Set the modal's label
 		modal.find('#baseModalLabel').html(label);
 
+		// Set the modal's body content
 		let body = modal.find('.modal-body');
 		let columns = [
 			'ID',
@@ -97,9 +109,18 @@
 			body.append('<span class="tab-align">' + columns[i] + '</span> = ' + row[i] + '<br>');
 		}
 
-		$('#baseModalBtn').html(button);
-		$('#baseModalBtn').parent().attr('onsubmit', onsubmit);
+		// Set the modal button's html and functionality
+		let btn = modal.find('#baseModalBtn');
 
+		btn.html(button.html);
+
+		btn.removeClass(function(index, className) {
+			return (className.match(/(^|\s)color-\S+/g) || []).join(' ');
+		}).addClass(button.color);
+
+		btn.closest('form').attr('onsubmit', button.onsubmit);
+
+		// Show the modal
 		modal.modal('show');
 	}
 </script>

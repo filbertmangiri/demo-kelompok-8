@@ -21,7 +21,7 @@ SET time_zone = "+00:00";
 -- Database: `demo_kelompok_8`
 --
 
-CREATE DATABASE `demo_kelompok_8`;
+CREATE DATABASE IF NOT EXISTS `demo_kelompok_8`;
 
 -- --------------------------------------------------------
 
@@ -29,7 +29,7 @@ CREATE DATABASE `demo_kelompok_8`;
 -- Table structure for table `accounts`
 --
 
-CREATE TABLE `accounts` (
+CREATE TABLE IF NOT EXISTS `accounts` (
   `id` int(10) UNSIGNED NOT NULL,
   `email` varchar(255) DEFAULT NULL,
   `username` varchar(128) DEFAULT NULL,

@@ -13,24 +13,36 @@
 				<li class="nav-item">
 					<a class="nav-link" href="<?= base_url(); ?>">Beranda</a>
 				</li>
+
+				<?php if ($session->get('is_logged_in') === true && $session->get('is_admin') === true) : ?>
+					<li class="nav-item">
+						<a class="nav-link" href="<?= base_url('admin'); ?>">Admin</a>
+					</li>
+				<?php endif; ?>
 			</ul>
 
 			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 				<?php if ($session->get('is_logged_in') === true) : ?>
-					<?php if ($session->get('is_admin') === true) : ?>
-						<li class="nav-item">
-							<a class="nav-link" href="<?= base_url('admin'); ?>">Admin</a>
-						</li>
-					<?php endif; ?>
-					<li class="nav-item">
-						<a class="nav-link" href="<?= base_url('logout'); ?>">Keluar</a>
+					<li class="nav-item dropdown">
+						<a class="nav-link" href="#" id="myAccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="bi bi-person-circle"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="myAccount">
+							<li><a class="dropdown-item" href="<?= base_url('u/profile/' . session()->get('acc_username')); ?>">Profil</a></li>
+							<li><a class="dropdown-item" href="<?= base_url('u/settings'); ?>">Pengaturan</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" href="<?= base_url('account/logout'); ?>">Keluar</a></li>
+						</ul>
 					</li>
 				<?php else : ?>
 					<li class="nav-item">
-						<a class="nav-link" href="<?= base_url('login'); ?>">Masuk</a>
+						<a class="nav-link" href="<?= base_url('account/login'); ?>">Masuk</a>
 					</li>
+
 					<li class="nav-item">
-						<a class="nav-link" href="<?= base_url('register'); ?>">Daftar</a>
+						<a class="nav-link" href="<?= base_url('account/register'); ?>">Daftar</a>
 					</li>
 				<?php endif; ?>
 			</ul>

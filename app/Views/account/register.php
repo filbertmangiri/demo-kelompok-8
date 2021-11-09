@@ -3,12 +3,12 @@
 <?= $this->section('content'); ?>
 
 <div class="container col-6">
-	<form id="registerForm" action="<?= base_url('register/submit'); ?>" method="post">
+	<form id="registerForm" action="<?= base_url('account/register/submit'); ?>" method="post">
 		<?= csrf_field(); ?>
 
 		<div class="form-floating mb-3">
 			<input type="text" class="form-control <?= $validation->hasError('email') ? 'is-invalid' : ''; ?>" id="email" name="email" placeholder="email" value="<?= old('email'); ?>" autofocus>
-			<label for="floatingInput">Email</label>
+			<label for="email">Email</label>
 
 			<div class="invalid-feedback">
 				<?= $validation->getError('email'); ?>
@@ -17,7 +17,7 @@
 
 		<div class="form-floating mb-3">
 			<input type="text" class="form-control <?= $validation->hasError('username') ? 'is-invalid' : ''; ?>" id="username" name="username" placeholder="username" value="<?= old('username'); ?>">
-			<label for="floatingInput">Username</label>
+			<label for="username">Username</label>
 
 			<div class="invalid-feedback">
 				<?= $validation->getError('username'); ?>
@@ -52,7 +52,7 @@
 			<div class="col-6">
 				<div class="form-floating">
 					<input type="text" class="form-control <?= $validation->hasError('first_name') ? 'is-invalid' : ''; ?>" id="firstName" name="first_name" placeholder="firstName" value="<?= old('first_name'); ?>">
-					<label for="floatingInput">Nama Depan</label>
+					<label for="firstName">Nama Depan</label>
 
 					<div class="invalid-feedback">
 						<?= $validation->getError('first_name'); ?>
@@ -63,7 +63,7 @@
 			<div class="col-6">
 				<div class="form-floating">
 					<input type="text" class="form-control <?= $validation->hasError('last_name') ? 'is-invalid' : ''; ?>" id="lastName" name="last_name" placeholder="lastName" value="<?= old('last_name'); ?>">
-					<label for="floatingInput">Nama Belakang</label>
+					<label for="lastName">Nama Belakang</label>
 
 					<div class="invalid-feedback">
 						<?= $validation->getError('last_name'); ?>

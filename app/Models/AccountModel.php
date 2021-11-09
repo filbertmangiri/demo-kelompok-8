@@ -36,23 +36,23 @@ class AccountModel extends Model
 	protected $validationMessages = [];
 	protected $skipValidation     = true;
 
-	public function getAccount($post = [], $onlyDeleted = false): array
+	public function getAccount($data = [])
 	{
-		if (!$post) {
-			if ($onlyDeleted) {
-				return $this->onlyDeleted()->findAll();
-			}
+		if (!$data) {
+			return $this->withDeleted()->findAll();
+		}
 
-			return $this->findAll();
+		if (!isset($data['email_username'])) {
+			return $this->where($data)->first();
 		}
 
 		$account = $this
-			->where('email', $post['email_username'])
-			->orWhere('username', $post['email_username'])
+			->where('email', $data['email_username'])
+			->orWhere('username', $data['email_username'])
 			->first();
 
-		if (!$account || !password_verify($post['password'], $account['password'])) {
-			return [];
+		if (!$account || !password_verify($data['password'], $account['password'])) {
+			return null;
 		}
 
 		return $account;
@@ -70,7 +70,7 @@ class AccountModel extends Model
 				'first_name' => $post['first_name'],
 				'last_name' => $post['last_name'],
 				'birth_date' => $post['birth_date'],
-				'gender' => $post['gender'],
+				'gender' => (bool) $post['gender'],
 				'is_admin' => false
 			]);
 

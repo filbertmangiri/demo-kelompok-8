@@ -3,7 +3,7 @@
 <?= $this->section('content'); ?>
 
 <div class="container col-6">
-	<form id="loginForm" action="<?= base_url('login/submit'); ?>" method="post">
+	<form id="loginForm" action="<?= base_url('account/login/submit'); ?>" method="post">
 		<?= csrf_field(); ?>
 
 		<?php if (!empty(session()->getFlashData('login_error_msg'))) : ?>
@@ -26,7 +26,7 @@
 
 		<div class="form-floating mb-3">
 			<input type="text" class="form-control" id="emailUsername" name="email_username" placeholder="emailUsername" value="<?= old('email_username'); ?>" autofocus>
-			<label for="floatingInput">Email atau username</label>
+			<label for="emailUsername">Email atau username</label>
 		</div>
 
 		<div class="form-floating mb-3">

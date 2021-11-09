@@ -44,22 +44,24 @@
 
 				<tbody>
 					<?php foreach ($accounts as $i => $key) : ?>
+						<?php if ($key['deleted_at']) continue; ?>
 						<tr>
 							<td id="id"><?= $key['id']; ?></td>
 							<td id="email"><?= $key['email']; ?></td>
-							<td id="username"><?= $key['username']; ?></td>
+							<td id="username">
+								<a href="<?= base_url('u/' . $key['username']); ?>">
+									<?= $key['username']; ?>
+								</a>
+							</td>
 							<td id="full_name"><?= $key['first_name'] . ' ' . $key['last_name']; ?></td>
 							<td id="birth_date"><?= $key['birth_date']; ?></td>
 							<td id="gender"><?= $key['gender'] == 1 ? 'Perempuan' : 'Laki-laki'; ?></td>
 							<td id="is_admin"><?= $key['is_admin'] == 1 ? 'Ya' : 'Tidak'; ?></td>
 							<td>
+								<i class="bi bi-person-circle" onclick="location.href = '<?= base_url('u/profile/' . $key['username']); ?>'" role="button"></i>
 								<?php if ($key['id'] != session()->get('acc_id')) : ?>
-									<span id="editBtn" onclick="acc_edit(<?= $key['id']; ?>);">
-										<i class="bi bi-tools text-dark"></i>
-									</span>
-									<span id="deleteBtn" onclick="acc_delete(<?= $key['id']; ?>, event);">
-										<i class="bi bi-trash text-danger"></i>
-									</span>
+									<!-- <i class="bi bi-tools text-dark" onclick="acc_edit($key['id'];, event);"></i> -->
+									<i class="bi bi-trash text-danger" onclick="acc_delete(<?= $key['id']; ?>, event);" role="button"></i>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -83,7 +85,8 @@
 				</thead>
 
 				<tbody>
-					<?php foreach ($deletedAccounts as $i => $key) : ?>
+					<?php foreach ($accounts as $i => $key) : ?>
+						<?php if (!$key['deleted_at']) continue; ?>
 						<tr>
 							<td id="id"><?= $key['id']; ?></td>
 							<td id="email"><?= $key['email']; ?></td>
@@ -93,12 +96,8 @@
 							<td id="gender"><?= $key['gender'] == 1 ? 'Perempuan' : 'Laki-laki'; ?></td>
 							<td id="is_admin"><?= $key['is_admin'] == 1 ? 'Ya' : 'Tidak'; ?></td>
 							<td>
-								<span id="restoreBtn" onclick="acc_restore(<?= $key['id']; ?>, event);">
-									<i class="bi bi-arrow-counterclockwise text-primary"></i>
-								</span>
-								<span id="permDeleteBtn" onclick="acc_delete(<?= $key['id']; ?>, event, true);">
-									<i class="bi bi-trash text-danger"></i>
-								</span>
+								<i class="bi bi-arrow-counterclockwise text-primary" onclick="acc_restore(<?= $key['id']; ?>, event);" role="button"></i>
+								<i class="bi bi-trash text-danger" onclick="acc_delete(<?= $key['id']; ?>, event, true);" role="button"></i>
 							</td>
 						</tr>
 					<?php endforeach; ?>

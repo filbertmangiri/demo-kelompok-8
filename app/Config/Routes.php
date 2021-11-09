@@ -8,7 +8,7 @@ $routes = Services::routes();
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
 if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
-    require SYSTEMPATH . 'Config/Routes.php';
+	require SYSTEMPATH . 'Config/Routes.php';
 }
 
 /*
@@ -17,7 +17,7 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Base');
+$routes->setDefaultController('Pages');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
@@ -32,21 +32,74 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 
-// Home
 $routes->get('/', 'Pages');
 
+// Admin
+$routes->group('admin', ['namespace' => '\App\Controllers\Admin'], function ($routes) {
+	$routes->get('', session()->get('is_logged_in') === true && session()->get('is_admin') === true ? 'Base' : function () {
+		return redirect()->to(base_url());
+	});
+
+	$routes->get('account', session()->get('is_logged_in') === true && session()->get('is_admin') === true ? 'Account' : function () {
+		return redirect()->to(base_url());
+	});
+
+	// Prevent 404 error when routing to an unknown controller
+	$routes->get('(:any)', session()->get('is_logged_in') === true && session()->get('is_admin') === true ? 'Base' : function () {
+		return redirect()->to(base_url());
+	});
+});
+
+// User
+$routes->group('u', ['namespace' => '\App\Controllers\User'], function ($routes) {
+
+	$routes->get('', session()->get('is_logged_in') === true ? 'Base::profile' : function () {
+		return redirect()->to(base_url('account/register'));
+	});
+
+	$routes->group('account', function ($routes) {
+		$routes->get('', 'Account');
+		$routes->get('(:any)', 'Account::$1');
+	});
+
+	$routes->group('profile', function ($routes) {
+		$routes->get('', session()->get('is_logged_in') === true ? 'Base::profile' : function () {
+			return redirect()->to(base_url('account/register'));
+		});
+		$routes->get('(:any)', session()->get('is_logged_in') === true ? 'Base::profile/$1' : function () {
+			return redirect()->to(base_url('account/register'));
+		});
+	});
+
+	$routes->get('(:any)', function () {
+		return redirect()->to(base_url('u/profile'));
+	});
+});
+
 // Account
+$routes->group('account', ['namespace' => '\App\Controllers\Account'], function ($routes) {
+	$routes->get('', session()->get('is_logged_in') !== true ? 'Login' : function () {
+		return redirect()->to(base_url());
+	});
 
-$routes->post('/login/submit', 'Account\Login::submit');
-$routes->get('/login/(:any)', 'Account\Login');
-$routes->get('/login', 'Account\Login');
+	$routes->get('login', session()->get('is_logged_in') !== true ? 'Login' : function () {
+		return redirect()->to(base_url());
+	});
+	$routes->get('register', session()->get('is_logged_in') !== true ? 'Register' : function () {
+		return redirect()->to(base_url());
+	});
+	$routes->get('logout', 'Logout');
 
-$routes->post('/register/submit', 'Account\Register::submit');
-$routes->get('/register/(:any)', 'Account\Register');
-$routes->get('/register', 'Account\Register');
+	// Prevent 404 error when routing to an unknown controller
+	$routes->get('(:any)', session()->get('is_logged_in') !== true ? 'Login' : function () {
+		return redirect()->to(base_url());
+	});
+});
 
-$routes->get('/logout/(:any)', 'Account\Logout');
-$routes->get('/logout', 'Account\Logout');
+// Redirect to home instead of showing 404
+// $routes->get('(:any)', function () {
+// 	return redirect()->to(base_url());
+// });
 
 /*
  * --------------------------------------------------------------------
@@ -62,5 +115,5 @@ $routes->get('/logout', 'Account\Logout');
  * needing to reload it.
  */
 if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
-    require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }

@@ -15,10 +15,6 @@ class Base extends BaseController
 
 	public function index()
 	{
-		if ($this->session->get('is_admin') !== true) {
-			return redirect()->to(base_url());
-		}
-
 		$data = [
 			'title' => 'Admin'
 		];

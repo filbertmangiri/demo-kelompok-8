@@ -19,10 +19,6 @@ class Login extends BaseController
 
 	public function index()
 	{
-		if ($this->session->get('is_logged_in') === true) {
-			return redirect()->to(base_url());
-		}
-
 		session();
 
 		$data = [
@@ -53,7 +49,7 @@ class Login extends BaseController
 		} else {
 			$this->session->setFlashdata('login_error_msg', 'Username atau password salah');
 
-			return redirect()->to(base_url('login'))->withInput();
+			return redirect()->to(base_url('account/login'))->withInput();
 		}
 
 		return redirect()->to(base_url());
