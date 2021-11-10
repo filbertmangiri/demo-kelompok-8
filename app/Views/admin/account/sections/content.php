@@ -49,7 +49,7 @@
 							<td id="id"><?= $key['id']; ?></td>
 							<td id="email"><?= $key['email']; ?></td>
 							<td id="username">
-								<a href="<?= base_url('u/' . $key['username']); ?>">
+								<a href="<?= base_url('u/' . $key['username']); ?>" title="Lihat Profil">
 									<?= $key['username']; ?>
 								</a>
 							</td>
@@ -58,10 +58,10 @@
 							<td id="gender"><?= $key['gender'] == 1 ? 'Perempuan' : 'Laki-laki'; ?></td>
 							<td id="is_admin"><?= $key['is_admin'] == 1 ? 'Ya' : 'Tidak'; ?></td>
 							<td>
-								<i class="bi bi-person-circle" onclick="location.href = '<?= base_url('u/profile/' . $key['username']); ?>'" role="button"></i>
+								<i class="bi bi-person-circle" onclick="location.href = '<?= base_url('u/profile/' . $key['username']); ?>'" role="button" title="Lihat Profil"></i>
 								<?php if ($key['id'] != session()->get('acc_id')) : ?>
 									<!-- <i class="bi bi-tools text-dark" onclick="acc_edit($key['id'];, event);"></i> -->
-									<i class="bi bi-trash text-danger" onclick="acc_delete(<?= $key['id']; ?>, event);" role="button"></i>
+									<i class="bi bi-trash text-danger" onclick="acc_delete(<?= $key['id']; ?>, event);" role="button" title="Hapus"></i>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -96,8 +96,8 @@
 							<td id="gender"><?= $key['gender'] == 1 ? 'Perempuan' : 'Laki-laki'; ?></td>
 							<td id="is_admin"><?= $key['is_admin'] == 1 ? 'Ya' : 'Tidak'; ?></td>
 							<td>
-								<i class="bi bi-arrow-counterclockwise text-primary" onclick="acc_restore(<?= $key['id']; ?>, event);" role="button"></i>
-								<i class="bi bi-trash text-danger" onclick="acc_delete(<?= $key['id']; ?>, event, true);" role="button"></i>
+								<i class="bi bi-arrow-counterclockwise text-primary" onclick="acc_restore(<?= $key['id']; ?>, event);" role="button" title="Pulihkan"></i>
+								<i class="bi bi-trash text-danger" onclick="acc_delete(<?= $key['id']; ?>, event, true);" role="button" title="Hapus Permanen"></i>
 							</td>
 						</tr>
 					<?php endforeach; ?>
