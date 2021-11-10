@@ -36,24 +36,27 @@ $routes->get('/', 'Pages');
 
 // Admin
 $routes->group('admin', ['namespace' => '\App\Controllers\Admin'], function ($routes) {
-	$routes->get('', session()->get('is_logged_in') === true && session()->get('is_admin') === true ? 'Base' : function () {
+	$session = session();
+
+	$routes->get('', $session->get('is_logged_in') === true && $session->get('is_admin') === true ? 'Base' : function () {
 		return redirect()->to(base_url());
 	});
 
-	$routes->get('account', session()->get('is_logged_in') === true && session()->get('is_admin') === true ? 'Account' : function () {
+	$routes->get('account', $session->get('is_logged_in') === true && $session->get('is_admin') === true ? 'Account' : function () {
 		return redirect()->to(base_url());
 	});
 
 	// Prevent 404 error when routing to an unknown controller
-	$routes->get('(:any)', session()->get('is_logged_in') === true && session()->get('is_admin') === true ? 'Base' : function () {
+	$routes->get('(:any)', $session->get('is_logged_in') === true && $session->get('is_admin') === true ? 'Base' : function () {
 		return redirect()->to(base_url());
 	});
 });
 
 // User
 $routes->group('u', ['namespace' => '\App\Controllers\User'], function ($routes) {
+	$session = session();
 
-	$routes->get('', session()->get('is_logged_in') === true ? 'Base::profile' : function () {
+	$routes->get('', $session->get('is_logged_in') === true ? 'Base::profile' : function () {
 		return redirect()->to(base_url('account/register'));
 	});
 
@@ -68,10 +71,13 @@ $routes->group('u', ['namespace' => '\App\Controllers\User'], function ($routes)
 	$routes->get('settings', 'Account::settings'); // Optional -> base_url('u/settings');
 
 	$routes->group('profile', function ($routes) {
-		$routes->get('', session()->get('is_logged_in') === true ? 'Base::profile' : function () {
+		$session = session();
+
+		$routes->get('', $session->get('is_logged_in') === true ? 'Base::profile' : function () {
 			return redirect()->to(base_url('account/register'));
 		});
-		$routes->get('(:any)', session()->get('is_logged_in') === true ? 'Base::profile/$1' : function () {
+
+		$routes->get('(:any)', $session->get('is_logged_in') === true ? 'Base::profile/$1' : function () {
 			return redirect()->to(base_url('account/register'));
 		});
 	});
@@ -83,20 +89,24 @@ $routes->group('u', ['namespace' => '\App\Controllers\User'], function ($routes)
 
 // Account
 $routes->group('account', ['namespace' => '\App\Controllers\Account'], function ($routes) {
-	$routes->get('', session()->get('is_logged_in') !== true ? 'Login' : function () {
+	$session = session();
+
+	$routes->get('', $session->get('is_logged_in') !== true ? 'Login' : function () {
 		return redirect()->to(base_url());
 	});
 
-	$routes->get('login', session()->get('is_logged_in') !== true ? 'Login' : function () {
+	$routes->get('login', $session->get('is_logged_in') !== true ? 'Login' : function () {
 		return redirect()->to(base_url());
 	});
-	$routes->get('register', session()->get('is_logged_in') !== true ? 'Register' : function () {
+
+	$routes->get('register', $session->get('is_logged_in') !== true ? 'Register' : function () {
 		return redirect()->to(base_url());
 	});
+
 	$routes->get('logout', 'Logout');
 
 	// Prevent 404 error when routing to an unknown controller
-	$routes->get('(:any)', session()->get('is_logged_in') !== true ? 'Login' : function () {
+	$routes->get('(:any)', $session->get('is_logged_in') !== true ? 'Login' : function () {
 		return redirect()->to(base_url());
 	});
 });

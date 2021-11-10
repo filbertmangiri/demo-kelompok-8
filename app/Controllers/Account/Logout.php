@@ -3,13 +3,19 @@
 namespace App\Controllers\Account;
 
 use App\Controllers\BaseController;
-use App\Models\AccountModel;
 
 class Logout extends BaseController
 {
+	private $session;
+
+	public function __construct()
+	{
+		$this->session = session();
+	}
+
 	public function index()
 	{
-		\Config\Services::session()->destroy();
+		$this->session->destroy();
 
 		return redirect()->to(base_url());
 	}

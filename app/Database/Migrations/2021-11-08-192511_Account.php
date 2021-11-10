@@ -47,6 +47,11 @@ class Account extends Migration
                 'type'             => 'BIT',
                 'default'         => false
             ],
+            'profile_picture' => [
+                'type'             => 'VARCHAR',
+                'constraint'     => '255',
+                'default'         => 'default.png'
+            ],
             'is_admin' => [
                 'type'             => 'BIT',
                 'default'         => false

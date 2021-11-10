@@ -4,7 +4,7 @@
 
 <div class="container col-6 text-center">
 	<div class="card mx-auto" style="width: 18rem;">
-		<img src="..." class="card-img-top" alt="...">
+		<img src="<?= base_url('img/profile-pictures/' . $account['profile_picture']); ?>" class="card-img-top" alt="Foto Profil <?= $account['username']; ?>" title="Foto profil <?= $account['username']; ?>">
 		<div class="card-body">
 			<h5 class="card-title"><?= $account['first_name'] . ' ' . $account['last_name']; ?></h5>
 			<p class="card-text">

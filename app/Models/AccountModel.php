@@ -21,6 +21,7 @@ class AccountModel extends Model
 		'last_name',
 		'birth_date',
 		'gender',
+		'profile_picture',
 		'is_admin',
 		'deleted_at'
 	];
@@ -36,34 +37,53 @@ class AccountModel extends Model
 	protected $validationMessages = [];
 	protected $skipValidation     = true;
 
-	public function getAccount($data = [])
+	public function getAccount($post = []): array
 	{
-		if (!$data) {
+		if (!$post) {
 			return $this->withDeleted()->findAll();
 		}
 
-		if (!isset($data['email_username'])) {
-			return $this->where($data)->first();
+		if (!isset($post['email_username'])) {
+			return $this->where($post)->first();
 		}
 
 		$account = $this
-			->where('email', $data['email_username'])
-			->orWhere('username', $data['email_username'])
+			->groupStart()
+			->where('email', $post['email_username'])
+			->orWhere('username', $post['email_username'])
+			->groupEnd()
 			->first();
 
-		if (!$account || $account['deleted_at'] || !password_verify($data['password'], $account['password'])) {
-			return null;
+		// $db = \Config\Database::connect();
+		// $email_username = $db->escapeString($post['email_username']);
+		// $account = $db
+		// 	->query("SELECT * FROM `accounts` WHERE (`email` = '$email_username' OR `username` = '$email_username') AND `deleted_at` IS NULL LIMIT 1")
+		// 	->getFirstRow('array');
+
+		// $account = db_connect() // => \Config\Database::connect()
+		// 	->table('accounts')
+		// 	->select('*')
+		// 	->groupStart()
+		// 	->where('email', $post['email_username'])
+		// 	->orWhere('username', $post['email_username'])
+		// 	->groupEnd()
+		// 	->where('deleted_at', null)
+		// 	->get(1)
+		// 	->getFirstRow('array');
+
+		if (!$account || !password_verify($post['password'], $account['password'])) {
+			return [];
 		}
 
 		return $account;
 	}
 
-	public function insertAccount($post): int
+	public function insertAccount($post, $file): int
 	{
 		$insertedID = -1;
 
 		try {
-			$this->insert([
+			$insertedID = $this->insert([
 				'email' => $post['email'],
 				'username' => $post['username'],
 				'password' => password_hash($post['password'], PASSWORD_DEFAULT),
@@ -71,10 +91,17 @@ class AccountModel extends Model
 				'last_name' => $post['last_name'],
 				'birth_date' => $post['birth_date'],
 				'gender' => (bool) $post['gender'],
-				'is_admin' => false
 			]);
 
-			$insertedID = $this->getInsertID();
+			if ($file['profile_picture']->getError() === UPLOAD_ERR_OK) {
+				$fileName = 'profile-' . $insertedID . '.' . $file['profile_picture']->guessExtension();
+
+				$file['profile_picture']->move('img/profile-pictures', $fileName, true);
+			} else {
+				$fileName = 'default-' . (!(bool) $post['gender'] ? 'male' : 'female') . '.png';
+			}
+
+			$this->update($insertedID, ['profile_picture' => $fileName]);
 		} catch (\Exception $e) {
 			$insertedID = -1;
 		}
@@ -82,12 +109,22 @@ class AccountModel extends Model
 		return $insertedID;
 	}
 
-	public function updateAccount($id, $data = []): bool
+	public function updateAccount($id, $post, $file): bool
 	{
 		try {
-			settype($data['gender'], 'boolean');
+			settype($post['gender'], 'boolean');
 
-			$this->update($id, $data);
+			if ($file['profile_picture']->getError() === 0) {
+				$fileName = 'profile-' . $id . '.' . $file['profile_picture']->guessExtension();
+
+				$file['profile_picture']->move('img/profile-pictures', $fileName, true);
+			} else {
+				$fileName = $post['old_profile_picture'];
+			}
+
+			$post['profile_picture'] = $fileName;
+
+			$this->update($id, $post);
 		} catch (\Exception $e) {
 			return false;
 		}
@@ -100,6 +137,17 @@ class AccountModel extends Model
 		$error_msg = '';
 
 		try {
+			$account = db_connect()
+				->table('accounts')
+				->select('profile_picture')
+				->where('id', $id)
+				->get(1)
+				->getFirstRow('array');
+
+			if ($purge && !str_starts_with($account['profile_picture'], 'default')) {
+				unlink('img/profile-pictures/' . $account['profile_picture']);
+			}
+
 			$this->delete($id, $purge);
 		} catch (\Exception $e) {
 			$error_msg = $e->getMessage();

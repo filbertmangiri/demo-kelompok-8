@@ -9,9 +9,12 @@ class Base extends BaseController
 {
 	protected $accountModel;
 
+	private $session;
+
 	public function __construct()
 	{
 		$this->accountModel = new AccountModel();
+		$this->session = session();
 	}
 
 	public function index($username = '')
@@ -22,7 +25,7 @@ class Base extends BaseController
 	public function profile($username = '')
 	{
 		if (empty($username)) {
-			return redirect()->to(base_url('u/profile/' . session()->get('acc_username')));
+			return redirect()->to(base_url('u/profile/' . $this->session->get('acc_username')));
 		}
 
 		$account = $this->accountModel->getAccount(['username' => $username]);

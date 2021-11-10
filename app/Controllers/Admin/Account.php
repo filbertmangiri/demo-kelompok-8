@@ -14,7 +14,7 @@ class Account extends BaseController
 	public function __construct()
 	{
 		$this->accountModel = new AccountModel();
-		$this->session = \Config\Services::session();
+		$this->session = session();
 	}
 
 	public function index()

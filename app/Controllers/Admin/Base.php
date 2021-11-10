@@ -10,7 +10,7 @@ class Base extends BaseController
 
 	public function __construct()
 	{
-		$this->session = \Config\Services::session();
+		$this->session = session();
 	}
 
 	public function index()

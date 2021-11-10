@@ -1,4 +1,4 @@
-<?php $session = \Config\Services::session(); ?>
+<?php $session = session(); ?>
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
 	<div class="container">
@@ -28,7 +28,7 @@
 							<i class="bi bi-person-circle"></i>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="myAccount">
-							<li><a class="dropdown-item" href="<?= base_url('u/profile/' . session()->get('acc_username')); ?>">Profil</a></li>
+							<li><a class="dropdown-item" href="<?= base_url('u/profile/' . $session->get('acc_username')); ?>">Profil</a></li>
 							<li><a class="dropdown-item" href="<?= base_url('u/account/settings'); ?>">Pengaturan</a></li>
 							<li>
 								<hr class="dropdown-divider">

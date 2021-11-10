@@ -14,7 +14,7 @@ class Login extends BaseController
 	public function __construct()
 	{
 		$this->accountModel = new AccountModel();
-		$this->session = \Config\Services::session();
+		$this->session = session();
 	}
 
 	public function index()
@@ -30,6 +30,13 @@ class Login extends BaseController
 
 	public function check()
 	{
+		if (!$this->validate([
+			'email_username' => 'required',
+			'password' => 'required'
+		])) {
+			return redirect()->to(base_url('account/login'))->withInput()->with('login_error_msg', 'Username atau password salah');
+		}
+
 		$account = $this->accountModel->getAccount($this->request->getPost());
 
 		if ($account) {
@@ -47,9 +54,7 @@ class Login extends BaseController
 
 			$this->session->remove('login_error_msg');
 		} else {
-			$this->session->setFlashdata('login_error_msg', 'Username atau password salah');
-
-			return redirect()->to(base_url('account/login'))->withInput();
+			return redirect()->to(base_url('account/login'))->withInput()->with('login_error_msg', 'Username atau password salah');
 		}
 
 		return redirect()->to(base_url());

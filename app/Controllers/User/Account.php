@@ -14,7 +14,7 @@ class Account extends BaseController
 	public function __construct()
 	{
 		$this->accountModel = new AccountModel();
-		$this->session = \Config\Services::session();
+		$this->session = session();
 	}
 
 	public function index()
@@ -28,7 +28,7 @@ class Account extends BaseController
 
 		$data = [
 			'title' => 'Akun - Pengaturan',
-			'account' => $this->accountModel->getAccount(['id' => session()->get('acc_id')]),
+			'account' => $this->accountModel->getAccount(['id' => $this->session->get('acc_id')]),
 			'validation' => \Config\Services::validation()
 		];
 
@@ -45,13 +45,17 @@ class Account extends BaseController
 			'first_name' => 'required|alpha_space|min_length[2]',
 			'last_name' => 'alpha_space',
 			'birth_date' => 'required|valid_date|less_than_today',
-			'gender' => 'required'
+			'gender' => 'required',
+			'profile_picture' => 'max_size[profile_picture,10240]|is_image[profile_picture]|mime_in[profile_picture,image/png,image/jpg,image/jpeg,image/gif]|ext_in[profile_picture,png,jpg,jpeg,gif]'
 		])) {
-			$validation = \Config\Services::validation();
-			return redirect()->to(base_url('u/account/settings'))->withInput()->with('validation', $validation);
+			return redirect()->to(base_url('u/account/settings'))->withInput();
 		}
 
-		$this->accountModel->updateAccount($id, $this->request->getPost());
+		$success = $this->accountModel->updateAccount($id, $this->request->getPost(), $this->request->getFiles());
+
+		if (!$success) {
+			return redirect()->to(base_url('u/account/settings'))->withInput()->with('settings_error_msg', 'Gagal mendaftar');
+		}
 
 		$this->session->set('acc_email', $this->request->getPost('email'));
 		$this->session->set('acc_username', $this->request->getPost('username'));
