@@ -1,8 +1,8 @@
 # Demo Kelompok 8
 
-Demo Tugas Presentasi Kelompok 8
-Semester 3
-Teknik Informatika
+Demo Tugas Presentasi Kelompok 8,
+Semester 3,
+Teknik Informatika,
 Universitas Multimedia Nusantara
 
 # Instalasi
