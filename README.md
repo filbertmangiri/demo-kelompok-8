@@ -16,7 +16,7 @@ Ikuti langkah berikut untuk instalasi aplikasi website ini
 
 ### 2. Environment
 
-- Duplikat file `env` dan rename menjadi `.env`
+- Rename file `env` menjadi `.env`
 - Buka file `.env`
 - Cari variabel `app.baseURL` dan ganti nilainya menjadi lokasi `public` di folder website anda
 
